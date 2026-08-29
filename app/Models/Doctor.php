@@ -20,8 +20,8 @@ class Doctor extends Model
         'specialty_id'
     ];
 
-    public function specialty()
+    public function specialties()
     {
-        return $this->belongsTo(Specialty::class);
+        return $this->belongsToMany(Specialty::class);
     }
 }
