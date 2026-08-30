@@ -10,6 +10,7 @@ class Patient extends Model
     use SoftDeletes;
     protected $fillable = [
         'id',
+        'user_id',
         'full_name',
         'national_code',
         'address',
@@ -22,5 +23,10 @@ class Patient extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

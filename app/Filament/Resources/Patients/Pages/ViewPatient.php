@@ -16,4 +16,13 @@ class ViewPatient extends ViewRecord
             EditAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $patient = $this->record;
+        $data['name'] = $patient->user->name;
+        $data['email'] = $patient->user->email;
+
+        return $data;
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Patients\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -19,6 +20,8 @@ class PatientsTable
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
+                TextColumn::make('user.name')->label('User Name')->sortable()->searchable()->toggleable(),
+                TextColumn::make('user.email')->label('User Email')->sortable()->searchable()->toggleable(),
                 TextColumn::make('full_name')->label('Name')->sortable(),
                 TextColumn::make('national_code')->label('National Code')->searchable(),
                 TextColumn::make('birth_date')->label('Birth Date')->sortable(),
@@ -44,6 +47,7 @@ class PatientsTable
             ])
             ->recordActions([
                 ViewAction::make(),
+                DeleteAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
