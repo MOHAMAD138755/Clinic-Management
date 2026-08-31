@@ -20,6 +20,7 @@ class CreatePatient extends CreateRecord
         ]);
 
         $data['user_id'] = $user->id;
+        $user->assignRole('patient');
 
         unset(
             $data['name'],

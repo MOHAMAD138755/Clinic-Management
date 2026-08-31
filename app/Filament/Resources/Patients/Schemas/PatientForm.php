@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class PatientForm
@@ -92,6 +93,14 @@ class PatientForm
                         TextInput::make('email')->label('User Email')
                             ->required()
                             ->email()
+                            ->rules(function ($livewire) {
+                                $user_id = isset($livewire->record) ? $livewire->record->id : null;
+                                return [
+                                    'required',
+                                    'email',
+                                    Rule::unique('users', 'email')->ignore($user_id,'id'),
+                                ];
+                            })
                             ->live(onBlur: true),
 
                         TextInput::make('password')->label('User Password')
