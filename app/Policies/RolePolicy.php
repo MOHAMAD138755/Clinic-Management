@@ -8,13 +8,6 @@ use Spatie\Permission\Models\Role;
 
 class RolePolicy
 {
-    public function before(User $user,$ability): ?bool
-    {
-        if($user->hasRole('User Admin')){
-            return true;
-        }
-        return null;
-    }
     /**
      * Determine whether the user can view any models.
      */
@@ -44,6 +37,9 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
+        if(in_array($role->name, ['User Admin','Editor','patient'])){
+            return false;
+        }
         return $user->hasRole('User Admin');
     }
 
@@ -52,6 +48,10 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
+        if(in_array($role->name, ['User Admin','Editor','patient'])){
+            return false;
+        }
+
         return $user->hasRole('User Admin');
     }
 
