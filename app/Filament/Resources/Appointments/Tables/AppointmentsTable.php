@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Appointments\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -63,6 +64,7 @@ class AppointmentsTable
                     )),
             ])
             ->recordActions([
+                EditAction::make(),
                 DeleteAction::make('delete')
             ])
             ->toolbarActions([

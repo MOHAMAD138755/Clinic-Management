@@ -10,7 +10,7 @@ class AppointmentPolicy
 {
     public function before(User $user, $ability): ?bool
     {
-        if ($user->hasRole('User Admin')) {
+        if ($user->hasRole(['Super Admin'])) {
             return true;
         }
 
@@ -18,14 +18,14 @@ class AppointmentPolicy
     }
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -33,7 +33,7 @@ class AppointmentPolicy
      */
     public function view(User $user, Appointment $appointment): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -41,7 +41,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -49,7 +49,7 @@ class AppointmentPolicy
      */
     public function update(User $user, Appointment $appointment): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -57,7 +57,7 @@ class AppointmentPolicy
      */
     public function delete(User $user, Appointment $appointment): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['Super Admin','User Admin']);
     }
 
     /**

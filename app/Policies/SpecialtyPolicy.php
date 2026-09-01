@@ -10,7 +10,7 @@ class SpecialtyPolicy
 {
     public function before(User $user, $ability): ?bool
     {
-        if ($user->hasRole('User Admin')) {
+        if ($user->hasRole(['Super Admin'])) {
             return true;
         }
 
@@ -21,7 +21,7 @@ class SpecialtyPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -29,7 +29,7 @@ class SpecialtyPolicy
      */
     public function view(User $user, Specialty $specialty): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -37,7 +37,7 @@ class SpecialtyPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -45,7 +45,7 @@ class SpecialtyPolicy
      */
     public function update(User $user, Specialty $specialty): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['Super Admin','User Admin']);
     }
 
     /**
@@ -53,12 +53,12 @@ class SpecialtyPolicy
      */
     public function delete(User $user, Specialty $specialty): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**

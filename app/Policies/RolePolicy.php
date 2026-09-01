@@ -13,7 +13,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -21,7 +21,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -29,7 +29,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -37,10 +37,10 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        if(in_array($role->name, ['User Admin','Editor','patient'])){
+        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin'])){
             return false;
         }
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['User Admin','Super Admin']);
     }
 
     /**
@@ -48,16 +48,16 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        if(in_array($role->name, ['User Admin','Editor','patient'])){
+        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin'])){
             return false;
         }
 
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['User Admin','Super Admin']);
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**

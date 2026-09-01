@@ -10,7 +10,7 @@ class PermissionPolicy
 {
     public function before(User $user,$ability): ?bool
     {
-        if($user->hasRole('User Admin')){
+        if($user->hasRole('Super Admin')){
             return true;
         }
         return null;
@@ -20,7 +20,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -28,7 +28,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -36,7 +36,7 @@ class PermissionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -44,7 +44,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['User Admin','Super Admin']);
     }
 
     /**
@@ -52,11 +52,11 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**

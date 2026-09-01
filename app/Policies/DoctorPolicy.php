@@ -10,7 +10,7 @@ class DoctorPolicy
 {
     public function before(User $user, $ability): ?bool
     {
-        if($user->hasRole('User Admin')){
+        if($user->hasRole(['Super Admin'])){
             return true;
         }
         return null;
@@ -20,7 +20,7 @@ class DoctorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -28,12 +28,12 @@ class DoctorPolicy
      */
     public function view(User $user, Doctor $doctor): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -41,7 +41,7 @@ class DoctorPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['User Admin','Editor']);
+        return $user->hasRole(['User Admin','Editor','Super Admin']);
     }
 
     /**
@@ -49,7 +49,7 @@ class DoctorPolicy
      */
     public function update(User $user, Doctor $doctor): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole('Super Admin');
     }
 
     /**
@@ -57,7 +57,7 @@ class DoctorPolicy
      */
     public function delete(User $user, Doctor $doctor): bool
     {
-        return $user->hasRole('User Admin');
+        return $user->hasRole(['Super Admin','User Admin']);
     }
 
     /**
