@@ -9,4 +9,15 @@ class Setting extends Model
     protected $fillable = [
         'id','key','value'
     ];
+
+    public static function get(string $key, $default = null): mixed
+    {
+        $setting = static::where('key', $key)->firstOrFail();
+        return $setting ? $setting->value : $default;
+    }
+
+    public static function set(string $key, $value): void
+    {
+        static::updateOrcreate(['key' => $key], ['value' => $value]);
+    }
 }
