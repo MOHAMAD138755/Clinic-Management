@@ -7,6 +7,7 @@ use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -49,11 +50,16 @@ class ManageSettings extends Page implements HasForms
 
             Section::make('maintenance')->label('Maintenance Settings')->schema([
                 FileUpload::make('maintenance_logo')->label('Set Logo')->image()->maxSize(1024)
-                    ->directory('settings'),
+                    ->disk('public')->directory('settings')
+                    ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/jpg'])
+                    ->uploadingMessage('uploading...'),
 
                 TextInput::make('maintenance_title')->label('Title')->required(),
 
                 Textarea::make('maintenance_description')->label('Description')->required(),
+
+                Toggle::make('maintenance_status')->label('Maintenance Status')->required()
+                    ->default(false)->onColor('success'),
             ]),
 
         ])->statePath('data');
