@@ -7,6 +7,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -26,7 +27,15 @@ class DoctorsTable
                 TextColumn::make('medical_system_number')->label('Medical System Number')->sortable()->searchable()
                 ->icon('heroicon-o-identification')->color('primary'),
                 TextColumn::make('phone')->label('Phone')->searchable()->icon('heroicon-o-phone')
-                ->color('danger'),
+                ->color('danger')->size(60),
+                ImageColumn::make('profile')
+                    ->label('Profile Image')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->circular()
+                    ->state(fn ($record) => asset('storage/' . $record->profile)),
+
+
                 IconColumn::make('active')->boolean()->searchable()->sortable(),
                 TextColumn::make('biography')->label('Biography')->sortable()->toggleable(),
                 TextColumn::make('specialties.name')->label('Specialties')->sortable()->searchable()->toggleable()

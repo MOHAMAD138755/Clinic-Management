@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Storage;
 use UnitEnum;
 
 class ManageSettings extends Page implements HasForms
@@ -68,6 +69,12 @@ class ManageSettings extends Page implements HasForms
     public function save(): void
     {
         $data = $this->form->getState();
+        $oldLogo = Setting::get('maintenance_logo');
+        $newLogo = $data['maintenance_logo'] ?? null;
+
+        if ($newLogo && $newLogo !== $oldLogo && $oldLogo) {
+            Storage::disk('public')->delete($oldLogo);
+        }
 
         foreach ($data as $key => $value) {
             Setting::set($key, $value);

@@ -16,6 +16,7 @@ class Doctor extends Model
         'last_name',
         'medical_system_number',
         'phone',
+        'profile',
         'active',
         'biography',
         'specialty_id'
