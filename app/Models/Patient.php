@@ -20,6 +20,11 @@ class Patient extends Model
         'updated_at',
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);

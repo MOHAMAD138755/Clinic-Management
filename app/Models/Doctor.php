@@ -22,6 +22,11 @@ class Doctor extends Model
         'specialty_id'
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function specialties()
     {
         return $this->belongsToMany(Specialty::class);
