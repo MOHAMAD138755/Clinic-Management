@@ -24,4 +24,9 @@ class DoctorTimeSlot extends Model
             'is_booked' => 'boolean',
         ];
     }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

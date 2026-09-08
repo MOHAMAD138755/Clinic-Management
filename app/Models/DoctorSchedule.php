@@ -44,4 +44,9 @@ class DoctorSchedule extends Model
         return $week[$this->day_of_week] ?? '';
     }
 
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+
 }
