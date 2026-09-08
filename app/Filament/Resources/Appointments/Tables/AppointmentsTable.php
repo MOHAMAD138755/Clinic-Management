@@ -29,11 +29,11 @@ class AppointmentsTable
                     ->color('primary')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('start_time')->label('Start Time')
+                TextColumn::make('timeSlot.start_time')->label('Start Time')
                     ->dateTime()
                     ->icon('heroicon-s-clock')
                     ->sortable(),
-                TextColumn::make('end_time')->label('End Time')
+                TextColumn::make('timeSlot.end_time')->label('End Time')
                     ->dateTime()
                     ->icon('heroicon-s-clock')
                     ->sortable(),

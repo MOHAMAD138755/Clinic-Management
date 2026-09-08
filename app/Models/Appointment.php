@@ -34,4 +34,9 @@ class Appointment extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function timeSlot()
+    {
+        return $this->belongsTo(DoctorTimeSlot::class,'time_slot_id');
+    }
 }
