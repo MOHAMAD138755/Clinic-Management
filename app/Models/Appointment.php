@@ -10,20 +10,11 @@ class Appointment extends Model
         'id',
         'doctor_id',
         'patient_id',
-        'start_time',
-        'end_time',
+        'time_slot_id',
         'appointment_date',
         'status',
         'notes',
     ];
-
-    public function casts(): array
-    {
-        return [
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-        ];
-    }
 
     public function doctor()
     {

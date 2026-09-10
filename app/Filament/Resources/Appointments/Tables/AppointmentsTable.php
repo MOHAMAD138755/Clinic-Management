@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources\Appointments\Tables;
 
+use App\Models\Appointment;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use function Symfony\Component\Translation\t;
 
 class AppointmentsTable
 {
@@ -65,7 +69,45 @@ class AppointmentsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make('delete')
+                DeleteAction::make('delete'),
+                Action::make('cancel')
+                ->color('danger')
+                ->icon('heroicon-o-x-circle')
+                ->requiresConfirmation()
+                ->action(function (Appointment $record) {
+                    if($record->timeSlot){
+
+                        $record->timeSlot->update([
+                            'is_booked' => false,
+                        ]);
+
+                        $record->update([
+                            'status' => 'cancelled',
+                        ]);
+                    }
+                    Notification::make()->title('Appointment has cancelled successful')->success()->send();
+                })
+                ->visible(fn($record) => $record->status != 'cancelled'),
+
+                Action::make('reserved')
+                ->color('success')
+                ->icon('heroicon-o-check-circle')
+                ->requiresConfirmation()
+                ->action(function (Appointment $record) {
+                    if($record->timeSlot){
+
+                        $record->timeSlot->update([
+                            'is_booked' => true,
+                        ]);
+
+                        $record->update([
+                            'status' => 'reserved',
+                        ]);
+
+                        Notification::make()->title('Appointment has reserved successful')->success()->send();
+                    }
+                })
+                ->visible(fn($record) => $record->status != 'reserved'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

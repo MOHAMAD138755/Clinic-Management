@@ -52,4 +52,15 @@ class Doctor extends Model
         return $this->hasMany(DoctorSchedule::class);
     }
 
+    public function scopeSearch($query, $search = null)
+    {
+        return $query->where(function ($query) use ($search) {
+            $query->where('first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('specialties', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                });
+        });
+    }
+
 }
