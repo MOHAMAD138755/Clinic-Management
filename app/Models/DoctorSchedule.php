@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class DoctorSchedule extends Model
 {
-    const SUN = 0;
-    const MON = 1;
-    const TUE = 2;
-    const WED = 3;
-    const THU = 4;
-    const FRI = 5;
-    const SAT = 6;
+    const SAT = 0;
+    const SUN = 1;
+    const MON = 2;
+    const TUE = 3;
+    const WED = 4;
+    const THU = 5;
+    const FRI = 6;
 
     protected $fillable = [
         'doctor_id',
@@ -41,7 +41,8 @@ class DoctorSchedule extends Model
             self::THU => 'thursday',
             self::FRI => 'friday',
         ];
-        return $week[$this->day_of_week] ?? '';
+        $raw = $this->getRawOriginal('day_of_week');
+        return $week[$raw] ?? '';
     }
 
     public function doctor()
