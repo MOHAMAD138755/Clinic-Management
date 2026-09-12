@@ -34,4 +34,9 @@ class Patient extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+    }
 }

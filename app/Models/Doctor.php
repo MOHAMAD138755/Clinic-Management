@@ -63,4 +63,9 @@ class Doctor extends Model
         });
     }
 
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
 }
