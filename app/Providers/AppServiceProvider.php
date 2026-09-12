@@ -5,14 +5,18 @@ namespace App\Providers;
 use App\Models\Appointment;
 use App\Models\Comment;
 use App\Models\Doctor;
+use App\Models\DoctorSchedule;
 use App\Models\Patient;
+use App\Models\Reaction;
 use App\Models\Specialty;
 use App\Models\User;
 use App\Policies\AppointmentPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\DoctorPolicy;
+use App\Policies\DoctorSchedulePolicy;
 use App\Policies\PatientPolicy;
 use App\Policies\PermissionPolicy;
+use App\Policies\ReactionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SpecialtyPolicy;
 use App\Policies\UserPolicy;
@@ -46,5 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Specialty::class,SpecialtyPolicy::class);
         Gate::policy(User::class,UserPolicy::class);
         Gate::policy(Comment::class,CommentPolicy::class);
+        Gate::policy(Reaction::class,ReactionPolicy::class);
+        Gate::policy(DoctorSchedule::class,DoctorSchedulePolicy::class);
     }
 }
