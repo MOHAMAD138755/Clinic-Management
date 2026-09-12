@@ -22,6 +22,8 @@ class CommentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Comment Management';
 
+    protected static string|null|\UnitEnum $navigationGroup = 'Comments And Reactions';
+
     public static function form(Schema $schema): Schema
     {
         return CommentForm::configure($schema);

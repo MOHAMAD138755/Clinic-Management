@@ -25,7 +25,7 @@ class Reaction extends Model
     public function casts(): array
     {
         return [
-            'type' => 'boolean',
+            'type' => 'integer',
         ];
     }
 }
