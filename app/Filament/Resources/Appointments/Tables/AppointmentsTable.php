@@ -15,7 +15,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use function Symfony\Component\Translation\t;
 
 class AppointmentsTable
 {
@@ -28,11 +27,17 @@ class AppointmentsTable
                     ->color('info')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('doctor.last_name')->label('Doctor')
+                TextColumn::make('doctor_id')->label('Doctor')
+                    ->getStateUsing(fn($record) => $record->doctor ? $record->doctor->first_name . ' ' . $record->doctor->last_name : '')
                     ->icon('heroicon-o-identification')
                     ->color('primary')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(query: function (Builder $query,string $search): Builder {
+                        return $query->whereHas('doctor', function (Builder $query) use ($search) {
+                            $query->where('first_name','LIKE',"%{$search}%")
+                                ->orWhere('last_name','LIKE',"%{$search}%");
+                        });
+                    }),
                 TextColumn::make('timeSlot.start_time')->label('Start Time')
                     ->dateTime()
                     ->icon('heroicon-s-clock')

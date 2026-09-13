@@ -10,6 +10,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CommentsTable
 {
@@ -21,10 +22,15 @@ class CommentsTable
 
                 TextColumn::make('patient.full_name')->label('Patient Name')->searchable(),
 
-                TextColumn::make('doctor.full_name')->label('Doctor Name')
+                TextColumn::make('doctor_id')->label('Doctor Name')
                     ->getStateUsing(fn($record) => $record->doctor->first_name . ' ' . $record->doctor->last_name)
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(query: function (Builder $query, $search): Builder {
+                        return $query->whereHas('doctor', function (Builder $query) use ($search) {
+                            $query->where('first_name', 'like', '%' . $search . '%')
+                                ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    }),
 
                 TextColumn::make('parent.comment_body')->label('Parent Comment body')
                     ->limit(40)->placeholder('Main Comment')->toggleable(),

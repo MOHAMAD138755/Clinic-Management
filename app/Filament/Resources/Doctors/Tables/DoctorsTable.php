@@ -36,7 +36,7 @@ class DoctorsTable
                     ->state(fn ($record) => asset('storage/' . $record->profile)),
 
 
-                IconColumn::make('active')->boolean()->searchable()->sortable(),
+                IconColumn::make('active')->boolean()->sortable(),
                 TextColumn::make('biography')->label('Biography')->sortable()->toggleable(),
                 TextColumn::make('specialties.name')->label('Specialties')->sortable()->searchable()->toggleable()
                     ->badge()->color('info'),

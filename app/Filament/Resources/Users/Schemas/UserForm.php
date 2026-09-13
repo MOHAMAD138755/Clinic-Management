@@ -52,7 +52,7 @@ class UserForm
                 Select::make('roles')->label('Roles')
                     ->multiple()
                     ->required()
-                    ->relationship('roles', 'name', fn(Builder $query) => $query->where('name', '!=', 'patient'))
+                    ->relationship('roles', 'name', fn(Builder $query) => $query->where('name', '!=', 'patient')->where('name', '!=', 'doctor'))
                     ->live(onBlur: true)
                     ->preload()
                     ->searchable(),

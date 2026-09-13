@@ -10,6 +10,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReactionsTable
 {
@@ -23,7 +24,12 @@ class ReactionsTable
 
                 TextColumn::make('doctor.last_name')
                     ->getStateUsing(fn($record) => $record->doctor->first_name . ' ' . $record->doctor->last_name)
-                    ->label('Doctor Name')->sortable()->searchable(),
+                    ->label('Doctor Name')->sortable()->searchable(query: function (Builder $query, $search): Builder {
+                        return $query->whereHas('doctor', function (Builder $query) use ($search) {
+                            $query->where('first_name', 'like', '%' . $search . '%')
+                                ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                    }),
 
                 TextColumn::make('type')
                     ->label('Type')

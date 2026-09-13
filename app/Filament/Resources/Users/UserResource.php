@@ -30,8 +30,8 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->whereHas('roles',function ($query){
-            $query->whereIn('name',['User Admin','Editor','Super Admin']);
+        return parent::getEloquentQuery()->whereHas('roles')->whereDoesntHave('roles', function ($query) {
+            $query->whereIn('name', ['patient','doctor']);
         });
     }
 

@@ -37,7 +37,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin'])){
+        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin','doctor'])){
             return false;
         }
         return $user->hasRole(['User Admin','Super Admin']);
@@ -48,7 +48,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin'])){
+        if(in_array($role->name, ['User Admin','Editor','patient','Super Admin','doctor'])){
             return false;
         }
 
