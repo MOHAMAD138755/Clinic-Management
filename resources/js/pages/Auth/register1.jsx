@@ -1,6 +1,7 @@
 import {motion} from "motion/react"
 import {useEffect, useState} from "react";
 import useDarkMode from "@/pages/DarkMode/useDarkMode.jsx";
+import {router, usePage} from "@inertiajs/react";
 
 export default function register1() {
 
@@ -11,6 +12,7 @@ export default function register1() {
     const [error, setError] = useState({})
     const {darkMode, toggleDarkMode} = useDarkMode()
     const [loading, setLoading] = useState(true)
+    const { errors } = usePage().props
 
     useEffect(() => {
         loadingPage()
@@ -49,9 +51,11 @@ export default function register1() {
         }
         setSubmitLoading(true)
 
-        setTimeout(() => {
-            setSubmitLoading(false)
-        }, 2000)
+        router.post('/auth/register/name',{
+            data: form
+        },{
+            onFinish: () => setSubmitLoading(false)
+        })
     }
 
     function loadingPage() {
@@ -101,6 +105,7 @@ export default function register1() {
                                className={`w-full h-[50px] rounded-lg border outline-none ${error.name ? 'border-2 border-red-500' : ''} ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'} border-gray-300 p-2 cursor-pointer transition-all focus:ring-1 focus:ring-blue-700`}
                         />
                         {error.name && <p className='text-red-500 text-sm'>{error.name}</p>}
+                        {errors['data.name'] && <p className='text-red-500 text-sm'>{errors['data.name']}</p>}
                     </div>
                     <div className='w-full relative'>
                     </div>
