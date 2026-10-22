@@ -1,6 +1,7 @@
 import {motion} from "motion/react"
 import {useEffect, useState} from "react";
 import useDarkMode from "@/pages/DarkMode/useDarkMode.jsx";
+import {Link} from "@inertiajs/react";
 
 export default function login() {
 
@@ -32,11 +33,8 @@ export default function login() {
         if (!form.name.trim()) {
             newError.name = 'Name Can Not Empty'
         }
-        if (form.name.length >= 25) {
-            newError.name = 'Name Is Max Length!'
-        }
-        if (form.name.length <= 3) {
-            newError.name = 'Name Is Min Length!'
+        if (form.name.length !== 11) {
+            newError.name = 'Name Is Max Length! (Phone Number)'
         }
         if (!form.password.trim()) {
             newError.password = 'Password Can Not Empty!'
@@ -154,7 +152,7 @@ export default function login() {
                             <span className='mx-2'>Remember</span>
                         </div>
                         <div>
-                            <a href='#' className='underline text-blue-700'>Register</a>
+                            <Link href='/auth/register' className='underline text-blue-700'>Register</Link>
                         </div>
                     </div>
                     <button type='submit' disabled={submitLoading}

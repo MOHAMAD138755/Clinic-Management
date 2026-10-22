@@ -13,4 +13,14 @@ class AuthController extends Controller
     {
         return Inertia::render('Auth/login',[]);
     }
+
+    public function register(): \Inertia\Response
+    {
+        return Inertia::render('Auth/register1',[]);
+    }
+
+    public function registerComplete(): \Inertia\Response
+    {
+        return Inertia::render('Auth/register2',[]);
+    }
 }

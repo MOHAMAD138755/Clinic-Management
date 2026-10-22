@@ -8,6 +8,8 @@ Route::middleware(Maintenance::class)->group(function (){
 
         Route::prefix('auth')->middleware(['guest'])->group(function () {
             Route::get('login', [AuthController::class,'login'])->name('login');
+            Route::get('register', [AuthController::class,'register'])->name('register');
+            Route::get('register/complete', [AuthController::class,'registerComplete'])->name('registerComplete');
         });
 
 });
