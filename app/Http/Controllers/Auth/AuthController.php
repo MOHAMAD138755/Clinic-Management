@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\RegisterUserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
+use App\Services\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -40,11 +41,11 @@ class AuthController extends Controller
         return to_route('registerComplete');
     }
 
-    public function registerPassword(RegisterUserRequest $request,RegisterUserAction $action): RedirectResponse
+    public function registerPassword(RegisterUserRequest $request,AuthService $service): RedirectResponse
     {
         $data = $request->validated();
+        $user = $service->registerUser(session('name'),$data['data']['password']);
 
-        $user = $action->execute(session('name'), $data['data']['password']);
         auth()->login($user, true);
         $request->session()->regenerate();
         session()->forget('name');
