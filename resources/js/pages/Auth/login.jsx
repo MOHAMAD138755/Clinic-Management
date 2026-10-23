@@ -1,7 +1,7 @@
 import {motion} from "motion/react"
 import {useEffect, useState} from "react";
 import useDarkMode from "@/pages/DarkMode/useDarkMode.jsx";
-import {Link} from "@inertiajs/react";
+import {Link, router, usePage} from "@inertiajs/react";
 
 export default function login() {
 
@@ -9,21 +9,23 @@ export default function login() {
 
     const [form, setForm] = useState({
         name: '',
-        password: ''
+        password: '',
+        remember: false
     })
     const [submitLoading, setSubmitLoading] = useState(false)
     const [error, setError] = useState({})
     const {darkMode, toggleDarkMode} = useDarkMode()
     const [loading, setLoading] = useState(true)
+    const { errors } = usePage().props
 
     useEffect(() => {
         loadingPage()
     }, [])
 
     function changeHandler(e) {
-        const {name, value} = e.target
+        const {name, value,type,checked} = e.target
         setForm({
-            ...form, [name]: value
+            ...form, [name]: type === 'checkbox' ? checked : value
         })
     }
 
@@ -62,9 +64,11 @@ export default function login() {
         }
         setSubmitLoading(true)
 
-        setTimeout(() => {
-            setSubmitLoading(false)
-        }, 2000)
+        router.post('/auth/login/complete',{
+            data: form
+        },{
+            onFinish: () => setSubmitLoading(false)
+        })
     }
 
     function loadingPage() {
@@ -114,6 +118,8 @@ export default function login() {
                                className={`w-full h-[50px] rounded-lg border outline-none ${error.name ? 'border-2 border-red-500' : ''} ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'} border-gray-300 p-2 cursor-pointer transition-all focus:ring-1 focus:ring-blue-700`}
                         />
                         {error.name && <p className='text-red-500 text-sm'>{error.name}</p>}
+                        {errors['data.name'] && <p className='text-red-500 text-sm'>{errors['data.name']}</p>}
+                        {errors.phone && <p className='text-red-500 text-sm'>{errors.phone}</p>}
                     </div>
                     <div className='w-full relative'>
                         <span>Enter Your Password</span>
@@ -145,10 +151,12 @@ export default function login() {
                                type={showPassword ? 'text' : 'password'}
                                className={`w-full h-[50px] rounded-lg border outline-none ${error.password ? 'border-2 border-red-500' : ''} ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'} border-gray-300 p-2 cursor-pointer transition-all focus:ring-1 focus:ring-blue-700`}/>
                         {error.password && <p className='text-red-500 text-sm'>{error.password}</p>}
+                        {errors['data.password'] && <p className='text-red-500 text-sm'>{errors['data.password']}</p>}
+                        {errors.phone && <p className='text-red-500 text-sm'>{errors.phone}</p>}
                     </div>
                     <div className='w-full flex justify-between items-center'>
                         <div>
-                            <input name='remember' type='checkbox' className='my-2 cursor-pointer'/>
+                            <input name='remember' onChange={changeHandler} checked={form.remember} type='checkbox' className='my-2 cursor-pointer'/>
                             <span className='mx-2'>Remember</span>
                         </div>
                         <div>

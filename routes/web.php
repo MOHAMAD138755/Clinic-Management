@@ -12,6 +12,7 @@ Route::middleware(Maintenance::class)->group(function (){
             Route::get('register/complete', [AuthController::class,'registerComplete'])->name('registerComplete');
             Route::post('register/name', [AuthController::class,'registerName'])->name('registerName');
             Route::post('register/password', [AuthController::class,'registerPassword'])->name('registerPassword');
+            Route::post('login/complete', [AuthController::class,'loginComplete'])->name('loginComplete');
         });
 
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\RegisterUserAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
@@ -46,9 +47,18 @@ class AuthController extends Controller
         $data = $request->validated();
         $user = $service->registerUser(session('name'),$data['data']['password']);
 
-        auth()->login($user, true);
+//        auth()->login($user);
         $request->session()->regenerate();
         session()->forget('name');
+
+        return redirect('/');
+    }
+
+    public function loginComplete(LoginUserRequest $request,AuthService $service): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $service->loginUser($data['data']['name'],$data['data']['password'],$data['data']['remember']);
 
         return redirect('/');
     }
