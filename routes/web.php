@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Middleware\Maintenance;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,9 @@ Route::middleware(Maintenance::class)->group(function (){
             Route::post('register/name', [AuthController::class,'registerName'])->name('registerName');
             Route::post('register/password', [AuthController::class,'registerPassword'])->name('registerPassword');
             Route::post('login/complete', [AuthController::class,'loginComplete'])->name('loginComplete');
+
+            Route::get('google',[GoogleController::class,'index'])->name('google');
+            Route::get('google/callback',[GoogleController::class,'callback'])->name('googleCallback');
         });
 
 });
