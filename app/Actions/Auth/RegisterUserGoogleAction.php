@@ -20,13 +20,20 @@ class RegisterUserGoogleAction
             $user = User::firstOrNew(['google_id' => $googleUser->getId()]);
             if (!$user->exists) {
 
-                if (User::where('email', $googleUser->getEmail())->exists()) {
-                    throw new RuntimeException('User already exists');
-                }
+                $user = User::where('email', $googleUser->getEmail())->first();
 
-                $user->name = $googleUser->getName();
-                $user->email = $googleUser->getEmail();
-                $user->password = Hash::make(Str::random(15));
+                if ($user) {
+                    if ($user->google_id && $user->google_id !== $googleUser->getId()) {
+                        throw new RuntimeException('User Account exists');
+                    }
+                    $user->google_id = $googleUser->getId();
+                }else {
+                    $user = new User();
+                    $user->name = $googleUser->getName();
+                    $user->email = $googleUser->getEmail();
+                    $user->google_id = $googleUser->getId();
+                    $user->password = Hash::make(Str::random(15));
+                }
                 $user->save();
             }
 

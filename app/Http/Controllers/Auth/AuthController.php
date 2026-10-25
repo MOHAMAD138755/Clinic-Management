@@ -9,6 +9,7 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Inertia\Inertia;
 
@@ -61,5 +62,15 @@ class AuthController extends Controller
         $service->loginUser($data['data']['name'],$data['data']['password'],$data['data']['remember']);
 
         return redirect('/');
+    }
+
+    public function logout(): RedirectResponse
+    {
+        Auth::logout();
+
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return to_route('login');
     }
 }
