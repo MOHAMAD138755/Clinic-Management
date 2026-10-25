@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\AuthDoctorController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Middleware\Maintenance;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,17 @@ Route::middleware(Maintenance::class)->group(function () {
 
         Route::get('google', [GoogleController::class, 'index'])->name('google');
         Route::get('google/callback', [GoogleController::class, 'callback'])->name('googleCallback');
+
+        Route::prefix('doctor')->group(function () {
+            Route::get('login', [AuthDoctorController::class, 'login'])->name('doctor.login');
+            Route::get('register', [AuthDoctorController::class, 'register'])->name('doctor.register');
+            Route::get('register/profile', [AuthDoctorController::class, 'registerProfile'])->name('doctor.registerProfile');
+
+
+            Route::post('register/complete', [AuthDoctorController::class, 'registerComplete'])
+                ->name('doctor.registerComplete');
+            Route::post('registerDoctor', [AuthDoctorController::class, 'registerDoctor']);
+        });
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
