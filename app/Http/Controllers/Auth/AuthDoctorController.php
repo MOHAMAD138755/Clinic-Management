@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginDoctorRequest;
 use App\Http\Requests\RegisterDoctorRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\RedirectResponse;
@@ -13,9 +14,18 @@ use Inertia\Inertia;
 
 class AuthDoctorController extends Controller
 {
-    public function login()
+    public function login(): \Inertia\Response
     {
+        return Inertia::render('Auth/doctor/doctorLogin', []);
+    }
 
+    public function loginCheck(LoginDoctorRequest $request, AuthService $service): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $service->loginDoctor($data['data']['phone'], $data['data']['password'], $data['data']['email'], $data['data']['remember']);
+
+        return redirect('/');
     }
 
     public function register(): \Inertia\Response
@@ -28,7 +38,7 @@ class AuthDoctorController extends Controller
         $data = $request->validate([
             'data.phone' => ['required', 'string', 'digits:11', "unique:doctors,phone", "unique:users,name", "regex:/^([0-9\s\-\+\(\)]*)$/"],
             'data.password' => ['required', 'string', 'min:6', 'max:15', Password::min(6)->mixedCase()->numbers()->max(15)->symbols()],
-            'data.email' => ['required', 'string', 'email', 'max:255', 'unique:users,email' ,'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]{2,}$/'],
+            'data.email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]{2,}$/'],
         ]);
 
         session()->put([
@@ -42,7 +52,7 @@ class AuthDoctorController extends Controller
     public function registerProfile(): \Inertia\Response
     {
         if (!session()->has('phone') && !session()->has('email') && !session()->has('password')) {
-            abort(403,'Phone or Email and password are required.');
+            abort(403, 'Phone or Email and password are required.');
         }
         return Inertia::render('Auth/doctor/register2', [
             'phone' => session('phone'),

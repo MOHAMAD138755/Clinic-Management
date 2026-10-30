@@ -18,6 +18,7 @@ Route::prefix('auth')->middleware(['guest'])->group(function () {
 
     Route::prefix('doctor')->group(function () {
         Route::get('login', [AuthDoctorController::class, 'login'])->name('doctor.login');
+        Route::post('login/check', [AuthDoctorController::class, 'loginCheck'])->name('doctorLoginCheck');
         Route::get('register', [AuthDoctorController::class, 'register'])->name('doctor.register');
         Route::get('register/profile', [AuthDoctorController::class, 'registerProfile'])->name('doctor.registerProfile');
 

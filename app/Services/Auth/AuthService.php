@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Actions\Auth\LoginDoctorAction;
 use App\Actions\Auth\LoginUserAction;
 use App\Actions\Auth\RegisterDoctorAction;
 use App\Actions\Auth\RegisterUserAction;
@@ -13,7 +14,8 @@ class AuthService
     public function __construct(protected RegisterUserAction $registerUserAction
         , protected LoginUserAction $loginUserAction
         , protected RegisterUserGoogleAction $registerUserGoogleAction
-        , protected RegisterDoctorAction $registerDoctorAction)
+        , protected RegisterDoctorAction $registerDoctorAction
+        , protected LoginDoctorAction $loginDoctorAction)
     {}
 
     public function registerUser($phone, $password): User
@@ -34,6 +36,11 @@ class AuthService
     public function registerDoctor($phone, $email, $password, $firstName, $lastName, $medical_system_number, $profile): User
     {
         return $this->registerDoctorAction->execute($phone,$email,$password,$firstName,$lastName,$medical_system_number,$profile);
+    }
+
+    public function loginDoctor($phone, $password,$email,$remember)
+    {
+        return $this->loginDoctorAction->execute($phone,$password,$email,$remember);
     }
 
 }
