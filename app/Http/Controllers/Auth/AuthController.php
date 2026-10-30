@@ -27,6 +27,9 @@ class AuthController extends Controller
 
     public function registerComplete(): \Inertia\Response
     {
+        if (!session()->has('name')) {
+            abort(403,'Phone is required.');
+        }
         return Inertia::render('Auth/register2',[
             'name' => session('name'),
         ]);

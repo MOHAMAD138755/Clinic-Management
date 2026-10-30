@@ -41,6 +41,9 @@ class AuthDoctorController extends Controller
 
     public function registerProfile(): \Inertia\Response
     {
+        if (!session()->has('phone') && !session()->has('email') && !session()->has('password')) {
+            abort(403,'Phone or Email and password are required.');
+        }
         return Inertia::render('Auth/doctor/register2', [
             'phone' => session('phone'),
         ]);
