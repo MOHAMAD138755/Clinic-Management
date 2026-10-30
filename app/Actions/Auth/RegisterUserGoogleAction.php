@@ -17,29 +17,39 @@ class RegisterUserGoogleAction
         $googleUser = Socialite::driver('google')->user();
 
         return DB::transaction(function () use ($googleUser) {
-            $user = User::firstOrNew(['google_id' => $googleUser->getId()]);
-            if (!$user->exists) {
 
-                $user = User::where('email', $googleUser->getEmail())->first();
+            if (!$googleUser->getEmail() || !($googleUser->user['email_verified'] ?? false)) {
+                throw new RuntimeException('Google email is not verified.');
+            }
 
-                if ($user) {
-                    if ($user->google_id && $user->google_id !== $googleUser->getId()) {
+            $user = User::where('google_id', $googleUser->getId())->first();
+            if (!$user) {
+
+                $userEmail = User::where('email', $googleUser->getEmail())->first();
+
+                if ($userEmail) {
+
+                    if ($userEmail->google_id && $userEmail->google_id !== $googleUser->getId()) {
                         throw new RuntimeException('User Account exists');
                     }
-                    $user->google_id = $googleUser->getId();
-                }else {
-                    $user = new User();
-                    $user->name = $googleUser->getName();
-                    $user->email = $googleUser->getEmail();
-                    $user->google_id = $googleUser->getId();
-                    $user->password = Hash::make(Str::random(15));
+
+                    $userEmail->google_id = $googleUser->getId();
+                    $userEmail->save();
+                    $user = $userEmail;
+
+                } else {
+                    $user = User::create([
+                        'name' => $googleUser->getName(),
+                        'email' => $googleUser->getEmail(),
+                        'google_id' => $googleUser->getId(),
+                        'password' => Hash::make(Str::random(32)),
+                    ]);
                 }
-                $user->save();
             }
 
             Patient::firstOrCreate([
                 'user_id' => $user->id,
-            ],[
+            ], [
                 'phone' => Str::random(11),
                 'full_name' => $user->name,
                 'national_code' => Str::random(10),

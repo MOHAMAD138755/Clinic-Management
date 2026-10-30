@@ -28,4 +28,4 @@ Route::prefix('auth')->middleware(['guest'])->group(function () {
         Route::post('registerDoctor', [AuthDoctorController::class, 'registerDoctor']);
     });
 });
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
